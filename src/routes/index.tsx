@@ -26,11 +26,11 @@ export const Route = createFileRoute("/")({
         content:
           "Discover suitable careers, assess your current skills, see your skill gaps and follow a personalized roadmap toward career readiness.",
       },
-      { property: "og:title", content: "SkillBridge — Career & Skill Gap Analysis" },
+      { property: "og:title", content: "SkillBridge — Turn Your Career Aspiration Into a Plan" },
       {
         property: "og:description",
         content:
-          "Discover careers, assess skills, analyse gaps and build a personalized learning roadmap.",
+          "Discover suitable careers, assess your current skills, see your skill gaps and follow a personalized roadmap toward career readiness.",
       },
     ],
   }),

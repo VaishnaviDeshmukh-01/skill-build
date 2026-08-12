@@ -79,14 +79,20 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "SkillBridge — Career & Skill Gap Analysis" },
+      { title: "SkillBridge — Turn Your Career Aspiration Into a Plan" },
       {
         name: "description",
         content:
-          "SkillBridge helps young people discover careers, assess skills, find skill gaps and build a personalized learning roadmap.",
+          "Discover suitable careers, assess your current skills, see your skill gaps and follow a personalized roadmap toward career readiness.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:title", content: "SkillBridge — Turn Your Career Aspiration Into a Plan" },
+      { name: "twitter:title", content: "SkillBridge — Turn Your Career Aspiration Into a Plan" },
+      { property: "og:description", content: "Discover suitable careers, assess your current skills, see your skill gaps and follow a personalized roadmap toward career readiness." },
+      { name: "twitter:description", content: "Discover suitable careers, assess your current skills, see your skill gaps and follow a personalized roadmap toward career readiness." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d84f35819a668ae38d4d9f3947794be6/id-preview-82e82cc5--316fbc41-82bf-4ba8-8eac-89b5c4db5fd0.lovable.app-1786559318300.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d84f35819a668ae38d4d9f3947794be6/id-preview-82e82cc5--316fbc41-82bf-4ba8-8eac-89b5c4db5fd0.lovable.app-1786559318300.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
