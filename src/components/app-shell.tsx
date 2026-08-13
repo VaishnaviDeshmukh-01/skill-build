@@ -55,10 +55,10 @@ export function AppShell({
   requireAuth = true,
 }: {
   title: string;
-  subtitle?: string;
-  actions?: React.ReactNode;
+  subtitle?: string | undefined;
+  actions?: React.ReactNode | undefined;
   children: React.ReactNode;
-  requireAuth?: boolean;
+  requireAuth?: boolean | undefined;
 }) {
   const { user, loading, logout } = useAuth();
   const navigate = useNavigate();

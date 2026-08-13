@@ -15,9 +15,8 @@ import { PROFICIENCY_SCALE } from "@/services/mock-backend";
 import type { ProficiencyKey } from "@/services/types";
 
 export const Route = createFileRoute("/assessment")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    career: typeof search["career"] === "string" ? search["career"] : undefined,
-  }),
+  validateSearch: (search: Record<string, unknown>): { career?: string } =>
+    typeof search["career"] === "string" ? { career: search["career"] } : {},
   head: () => ({
     meta: [
       { title: "Skill Assessment — SkillBridge" },
