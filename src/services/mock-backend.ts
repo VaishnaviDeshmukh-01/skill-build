@@ -55,8 +55,35 @@ export const PRIORITY_LABEL: Record<GapPriority, string> = {
 
 /* ------------------------------------------------------------------- store */
 
+/**
+ * Demo-mode credential handling.
+ *
+ * Real passwords are never persisted. On register/login the raw password is
+ * immediately converted to a non-reversible digest (salted, iterated FNV-1a)
+ * and only that digest is stored in localStorage. This is a placeholder for
+ * demo mode only — real authentication must happen on a server that never
+ * exposes credentials to the browser.
+ */
+const PW_SALT = "skillbridge.demo.v1";
+
+export function hashPassword(raw: string): string {
+  let h1 = 0x811c9dc5;
+  let h2 = 0x01000193;
+  const input = `${PW_SALT}:${raw}:${PW_SALT}`;
+  for (let round = 0; round < 512; round++) {
+    for (let i = 0; i < input.length; i++) {
+      h1 ^= input.charCodeAt(i) + round;
+      h1 = Math.imul(h1, 0x01000193) >>> 0;
+      h2 = Math.imul(h2 ^ h1, 0x85ebca6b) >>> 0;
+    }
+  }
+  return `fnv1a512$${h1.toString(16).padStart(8, "0")}${h2.toString(16).padStart(8, "0")}`;
+}
+
+type StoredUser = User & { password_hash: string };
+
 interface DB {
-  users: (User & { password: string })[];
+  users: StoredUser[];
   assessments: Assessment[];
   roadmaps: Roadmap[];
   chats: Record<string, ChatMessage[]>;
@@ -68,11 +95,11 @@ const STORAGE_KEY = "skillbridge.db.v1";
 const uid = () => Math.random().toString(36).slice(2, 10);
 const now = () => new Date().toISOString();
 
-const demoUser: User & { password: string } = {
+const demoUser: StoredUser = {
   id: "demo-student",
   full_name: "Demo Student",
   email: "demo@skillbridge.app",
-  password: "demo1234",
+  password_hash: hashPassword("demo1234"),
   role: "student",
   education: "Undergraduate",
   degree: "B.Tech",
@@ -85,11 +112,11 @@ const demoUser: User & { password: string } = {
   is_demo: true,
 };
 
-const adminUser: User & { password: string } = {
+const adminUser: StoredUser = {
   id: "demo-admin",
   full_name: "Demo Admin",
   email: "admin@skillbridge.app",
-  password: "admin1234",
+  password_hash: hashPassword("admin1234"),
   role: "admin",
   interests: [],
   onboarded: true,
@@ -345,11 +372,11 @@ export const mockAuth = {
     if (d.users.some((u) => u.email.toLowerCase() === input.email.toLowerCase())) {
       throw new ApiError("An account with this email already exists", 409);
     }
-    const user: User & { password: string } = {
+    const user: StoredUser = {
       id: uid(),
       full_name: input.full_name,
       email: input.email,
-      password: input.password,
+      password_hash: hashPassword(input.password),
       role: "student",
       education: input.education,
       study_year: input.study_year,
@@ -365,7 +392,7 @@ export const mockAuth = {
   login(email: string, password: string) {
     const d = db();
     const user = d.users.find((u) => u.email.toLowerCase() === email.toLowerCase().trim());
-    if (!user || user.password !== password) {
+    if (!user || user.password_hash !== hashPassword(password)) {
       throw new ApiError("Incorrect email or password", 401);
     }
     d.session = user.id;
@@ -398,8 +425,8 @@ export const mockAuth = {
   },
 };
 
-const strip = (u: User & { password: string }): User => {
-  const { password: _password, ...rest } = u;
+const strip = (u: StoredUser): User => {
+  const { password_hash: _passwordHash, ...rest } = u;
   return rest;
 };
 
@@ -983,6 +1010,14 @@ function buildAdvisorReply(
 export const mockAdmin = {
   overview() {
     const d = db();
+    // Authorization is enforced here, at the data layer, from the stored
+    // session — never from a role value supplied by the caller/UI. The real
+    // FastAPI `/admin/overview` endpoint must re-check the authenticated
+    // user's role server-side and return 403 for non-admins.
+    const actor = requireUser();
+    if (actor.role !== "admin") {
+      throw new ApiError("You don't have permission to view admin analytics", 403);
+    }
     const students = d.users.filter((u) => u.role === "student");
     const byCareer: Record<string, number> = {};
     const gapTotals: Record<string, { total: number; count: number }> = {};
