@@ -25,9 +25,8 @@ import { PRIORITY_LABEL } from "@/services/mock-backend";
 import type { GapPriority, SkillScore } from "@/services/types";
 
 export const Route = createFileRoute("/results")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    id: typeof search["id"] === "string" ? search["id"] : undefined,
-  }),
+  validateSearch: (search: Record<string, unknown>): { id?: string } =>
+    typeof search["id"] === "string" ? { id: search["id"] } : {},
   head: () => ({
     meta: [
       { title: "Your Skill Gap Results — SkillBridge" },
