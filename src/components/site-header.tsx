@@ -45,6 +45,7 @@ export function SiteHeader() {
           ))}
         </nav>
         <div className="hidden items-center gap-2 md:flex">
+          <ThemeToggle />
           {user ? (
             <Button asChild>
               <Link to="/dashboard">Go to dashboard</Link>
