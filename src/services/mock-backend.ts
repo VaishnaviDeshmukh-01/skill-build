@@ -91,7 +91,8 @@ interface DB {
   session: string | null;
 }
 
-const STORAGE_KEY = "skillbridge.db.v1";
+// Bumped to v2 so any previously persisted plaintext-password store is discarded.
+const STORAGE_KEY = "skillbridge.db.v2";
 const uid = () => Math.random().toString(36).slice(2, 10);
 const now = () => new Date().toISOString();
 
