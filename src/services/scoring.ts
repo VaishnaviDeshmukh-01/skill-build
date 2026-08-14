@@ -4,7 +4,7 @@
  * implementation in `backend/app/services/`.
  */
 
-import { getCareer, getSkill, type Career } from "@/data/careers";
+import { CAREERS, getSkill, type Career, type LearningPhase } from "@/data/careers";
 import {
   GAP_THRESHOLDS,
   KNOWLEDGE_ANSWER_INDEX,
@@ -151,13 +151,13 @@ const WHY_TEXT: Record<string, string> = {
 };
 
 export function buildRecommendations(assessment: Assessment): Recommendation[] {
-  const career = getCareer(assessment.career_id);
+  const career = CAREERS.find((c) => c.id === assessment.career_id);
   if (!career) return [];
   return assessment.skills
     .filter((s) => s.priority !== "strong")
     .slice(0, 6)
     .map((s) => {
-      const phase = career.learning_path.find((p) => p.focus_skill_ids.includes(s.skill_id));
+      const phase = career.learning_path.find((p: LearningPhase) => p.focus_skill_ids.includes(s.skill_id));
       return {
         skill_id: s.skill_id,
         skill_name: s.skill_name,
