@@ -14,16 +14,266 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      advisor_messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          role: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      assessments: {
+        Row: {
+          answers: Json
+          career_id: string
+          career_name: string
+          created_at: string
+          id: string
+          knowledge_score: number | null
+          readiness_score: number
+          skills: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          answers?: Json
+          career_id: string
+          career_name: string
+          created_at?: string
+          id?: string
+          knowledge_score?: number | null
+          readiness_score?: number
+          skills?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          answers?: Json
+          career_id?: string
+          career_name?: string
+          created_at?: string
+          id?: string
+          knowledge_score?: number | null
+          readiness_score?: number
+          skills?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          branch: string | null
+          career_goal_id: string | null
+          college: string | null
+          created_at: string
+          degree: string | null
+          education: string | null
+          email: string
+          full_name: string
+          id: string
+          interests: string[]
+          onboarded: boolean
+          study_year: string | null
+          updated_at: string
+        }
+        Insert: {
+          branch?: string | null
+          career_goal_id?: string | null
+          college?: string | null
+          created_at?: string
+          degree?: string | null
+          education?: string | null
+          email?: string
+          full_name?: string
+          id: string
+          interests?: string[]
+          onboarded?: boolean
+          study_year?: string | null
+          updated_at?: string
+        }
+        Update: {
+          branch?: string | null
+          career_goal_id?: string | null
+          college?: string | null
+          created_at?: string
+          degree?: string | null
+          education?: string | null
+          email?: string
+          full_name?: string
+          id?: string
+          interests?: string[]
+          onboarded?: boolean
+          study_year?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      readiness_history: {
+        Row: {
+          career_id: string | null
+          created_at: string
+          id: string
+          readiness: number
+          recorded_at: string
+          user_id: string
+        }
+        Insert: {
+          career_id?: string | null
+          created_at?: string
+          id?: string
+          readiness: number
+          recorded_at?: string
+          user_id: string
+        }
+        Update: {
+          career_id?: string | null
+          created_at?: string
+          id?: string
+          readiness?: number
+          recorded_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      roadmap_items: {
+        Row: {
+          created_at: string
+          estimated_weeks: number
+          focus_skill_ids: string[]
+          id: string
+          phase: number
+          progress: number
+          project: string
+          roadmap_id: string
+          status: string
+          title: string
+          topics: string[]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          estimated_weeks?: number
+          focus_skill_ids?: string[]
+          id?: string
+          phase: number
+          progress?: number
+          project?: string
+          roadmap_id: string
+          status?: string
+          title: string
+          topics?: string[]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          estimated_weeks?: number
+          focus_skill_ids?: string[]
+          id?: string
+          phase?: number
+          progress?: number
+          project?: string
+          roadmap_id?: string
+          status?: string
+          title?: string
+          topics?: string[]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "roadmap_items_roadmap_id_fkey"
+            columns: ["roadmap_id"]
+            isOneToOne: false
+            referencedRelation: "roadmaps"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      roadmaps: {
+        Row: {
+          career_id: string
+          career_name: string
+          created_at: string
+          generated_at: string
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          career_id: string
+          career_name: string
+          created_at?: string
+          generated_at?: string
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          career_id?: string
+          career_name?: string
+          created_at?: string
+          generated_at?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "student" | "admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +400,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["student", "admin"],
+    },
   },
 } as const
