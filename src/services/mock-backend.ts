@@ -684,7 +684,7 @@ export const KNOWLEDGE_QUESTIONS: KnowledgeQuestion[] = [
   },
 ];
 
-const KNOWLEDGE_ANSWER_INDEX: Record<string, number> = {
+export const KNOWLEDGE_ANSWER_INDEX: Record<string, number> = {
   k_js_1: 0,
   k_sql_1: 0,
   k_react_1: 0,
