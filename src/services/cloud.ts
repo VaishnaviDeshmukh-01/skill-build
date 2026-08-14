@@ -143,7 +143,7 @@ export const cloudAuth = {
 
   async updateProfile(patch: Partial<User>): Promise<User> {
     const userId = await requireUserId();
-    const update: Record<string, unknown> = {};
+    const update: Partial<Record<(typeof fields)[number], unknown>> = {};
     const fields = [
       "full_name",
       "education",
@@ -159,7 +159,10 @@ export const cloudAuth = {
       if (patch[f] !== undefined) update[f] = patch[f];
     });
 
-    const { error } = await supabase.from("profiles").update(update).eq("id", userId);
+    const { error } = await supabase
+      .from("profiles")
+      .update(update as never)
+      .eq("id", userId);
     if (error) throw new ApiError("We couldn't save your profile.", 400);
     const me = await cloudAuth.me();
     if (!me) throw new ApiError("Please sign in to continue.", 401);
