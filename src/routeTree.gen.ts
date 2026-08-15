@@ -14,7 +14,6 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AdvisorRouteImport } from './routes/advisor'
 import { Route as AssessmentRouteImport } from './routes/assessment'
-import { Route as CareersRouteImport } from './routes/careers'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as DiscoveryRouteImport } from './routes/discovery'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
@@ -25,6 +24,7 @@ import { Route as ProgressRouteImport } from './routes/progress'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ResultsRouteImport } from './routes/results'
 import { Route as RoadmapRouteImport } from './routes/roadmap'
+import { Route as CareersIndexRouteImport } from './routes/careers.index'
 import { Route as CareersCareerIdRouteImport } from './routes/careers.$careerId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -50,11 +50,6 @@ const AdvisorRoute = AdvisorRouteImport.update({
 const AssessmentRoute = AssessmentRouteImport.update({
   id: '/assessment',
   path: '/assessment',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CareersRoute = CareersRouteImport.update({
-  id: '/careers',
-  path: '/careers',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -107,10 +102,15 @@ const RoadmapRoute = RoadmapRouteImport.update({
   path: '/roadmap',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CareersIndexRoute = CareersIndexRouteImport.update({
+  id: '/careers/',
+  path: '/careers/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CareersCareerIdRoute = CareersCareerIdRouteImport.update({
-  id: '/$careerId',
-  path: '/$careerId',
-  getParentRoute: () => CareersRoute,
+  id: '/careers/$careerId',
+  path: '/careers/$careerId',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -119,7 +119,6 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRoute
   '/advisor': typeof AdvisorRoute
   '/assessment': typeof AssessmentRoute
-  '/careers': typeof CareersRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/discovery': typeof DiscoveryRoute
   '/how-it-works': typeof HowItWorksRoute
@@ -131,6 +130,7 @@ export interface FileRoutesByFullPath {
   '/results': typeof ResultsRoute
   '/roadmap': typeof RoadmapRoute
   '/careers/$careerId': typeof CareersCareerIdRoute
+  '/careers/': typeof CareersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -138,7 +138,6 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRoute
   '/advisor': typeof AdvisorRoute
   '/assessment': typeof AssessmentRoute
-  '/careers': typeof CareersRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/discovery': typeof DiscoveryRoute
   '/how-it-works': typeof HowItWorksRoute
@@ -150,6 +149,7 @@ export interface FileRoutesByTo {
   '/results': typeof ResultsRoute
   '/roadmap': typeof RoadmapRoute
   '/careers/$careerId': typeof CareersCareerIdRoute
+  '/careers': typeof CareersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -158,7 +158,6 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/advisor': typeof AdvisorRoute
   '/assessment': typeof AssessmentRoute
-  '/careers': typeof CareersRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/discovery': typeof DiscoveryRoute
   '/how-it-works': typeof HowItWorksRoute
@@ -170,6 +169,7 @@ export interface FileRoutesById {
   '/results': typeof ResultsRoute
   '/roadmap': typeof RoadmapRoute
   '/careers/$careerId': typeof CareersCareerIdRoute
+  '/careers/': typeof CareersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -179,7 +179,6 @@ export interface FileRouteTypes {
     | '/admin'
     | '/advisor'
     | '/assessment'
-    | '/careers'
     | '/dashboard'
     | '/discovery'
     | '/how-it-works'
@@ -191,6 +190,7 @@ export interface FileRouteTypes {
     | '/results'
     | '/roadmap'
     | '/careers/$careerId'
+    | '/careers/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -198,7 +198,6 @@ export interface FileRouteTypes {
     | '/admin'
     | '/advisor'
     | '/assessment'
-    | '/careers'
     | '/dashboard'
     | '/discovery'
     | '/how-it-works'
@@ -210,6 +209,7 @@ export interface FileRouteTypes {
     | '/results'
     | '/roadmap'
     | '/careers/$careerId'
+    | '/careers'
   id:
     | '__root__'
     | '/'
@@ -217,7 +217,6 @@ export interface FileRouteTypes {
     | '/admin'
     | '/advisor'
     | '/assessment'
-    | '/careers'
     | '/dashboard'
     | '/discovery'
     | '/how-it-works'
@@ -229,6 +228,7 @@ export interface FileRouteTypes {
     | '/results'
     | '/roadmap'
     | '/careers/$careerId'
+    | '/careers/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -237,7 +237,6 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   AdvisorRoute: typeof AdvisorRoute
   AssessmentRoute: typeof AssessmentRoute
-  CareersRoute: typeof CareersRouteWithChildren
   DashboardRoute: typeof DashboardRoute
   DiscoveryRoute: typeof DiscoveryRoute
   HowItWorksRoute: typeof HowItWorksRoute
@@ -248,6 +247,8 @@ export interface RootRouteChildren {
   RegisterRoute: typeof RegisterRoute
   ResultsRoute: typeof ResultsRoute
   RoadmapRoute: typeof RoadmapRoute
+  CareersCareerIdRoute: typeof CareersCareerIdRoute
+  CareersIndexRoute: typeof CareersIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -285,13 +286,6 @@ declare module '@tanstack/react-router' {
       path: '/assessment'
       fullPath: '/assessment'
       preLoaderRoute: typeof AssessmentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/careers': {
-      id: '/careers'
-      path: '/careers'
-      fullPath: '/careers'
-      preLoaderRoute: typeof CareersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -364,26 +358,22 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RoadmapRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/careers/': {
+      id: '/careers/'
+      path: '/careers'
+      fullPath: '/careers/'
+      preLoaderRoute: typeof CareersIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/careers/$careerId': {
       id: '/careers/$careerId'
-      path: '/$careerId'
+      path: '/careers/$careerId'
       fullPath: '/careers/$careerId'
       preLoaderRoute: typeof CareersCareerIdRouteImport
-      parentRoute: typeof CareersRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
-
-interface CareersRouteChildren {
-  CareersCareerIdRoute: typeof CareersCareerIdRoute
-}
-
-const CareersRouteChildren: CareersRouteChildren = {
-  CareersCareerIdRoute: CareersCareerIdRoute,
-}
-
-const CareersRouteWithChildren =
-  CareersRoute._addFileChildren(CareersRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -391,7 +381,6 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRoute,
   AdvisorRoute: AdvisorRoute,
   AssessmentRoute: AssessmentRoute,
-  CareersRoute: CareersRouteWithChildren,
   DashboardRoute: DashboardRoute,
   DiscoveryRoute: DiscoveryRoute,
   HowItWorksRoute: HowItWorksRoute,
@@ -402,6 +391,8 @@ const rootRouteChildren: RootRouteChildren = {
   RegisterRoute: RegisterRoute,
   ResultsRoute: ResultsRoute,
   RoadmapRoute: RoadmapRoute,
+  CareersCareerIdRoute: CareersCareerIdRoute,
+  CareersIndexRoute: CareersIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

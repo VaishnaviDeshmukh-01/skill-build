@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { ErrorState, LoadingCards } from "@/components/state-views";
 import { careersService } from "@/services/careers";
 
-export const Route = createFileRoute("/careers")({
+export const Route = createFileRoute("/careers/")({
   head: () => ({
     meta: [
       { title: "Explore Careers — SkillBridge" },
