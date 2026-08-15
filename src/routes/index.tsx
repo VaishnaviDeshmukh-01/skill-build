@@ -76,15 +76,16 @@ const SOLUTIONS = [
 function Landing() {
   return (
     <PublicPage>
-      <section className="hero-mesh border-b border-border">
-        <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 py-16 lg:grid-cols-2 lg:py-24">
+      <section className="hero-mesh relative overflow-hidden border-b border-border">
+        <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 py-20 lg:grid-cols-2 lg:py-28">
           <div>
-            <Badge variant="secondary" className="gap-1.5">
+            <span className="chip">
               <Sparkles className="size-3.5" aria-hidden />
-              Turn Your Career Aspiration Into a Clear Action Plan
-            </Badge>
-            <h1 className="mt-5 text-4xl font-bold sm:text-5xl lg:text-6xl">
-              Discover Your Career. Identify Your Skill Gaps. Build Your Future.
+              Career clarity for the next generation
+            </span>
+            <h1 className="mt-6 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+              Discover your career.{" "}
+              <span className="text-gradient-brand">Close your skill gaps.</span> Build your future.
             </h1>
             <p className="mt-5 max-w-xl text-lg text-muted-foreground">
               SkillBridge helps young people discover suitable career paths, assess their current
@@ -92,7 +93,7 @@ function Landing() {
               career readiness.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Button asChild size="lg">
+              <Button asChild size="lg" className="shadow-[var(--shadow-glow)]">
                 <Link to="/register">
                   Start Free Assessment <ArrowRight className="size-4" aria-hidden />
                 </Link>
@@ -101,11 +102,26 @@ function Landing() {
                 <Link to="/careers">Explore Careers</Link>
               </Button>
             </div>
+            <dl className="mt-10 grid max-w-md grid-cols-3 gap-4">
+              {[
+                { k: `${CAREERS.length}+`, v: "Career paths" },
+                { k: "60+", v: "Tracked skills" },
+                { k: "5 min", v: "To your roadmap" },
+              ].map((s) => (
+                <div key={s.v}>
+                  <dt className="font-display text-2xl font-bold">{s.k}</dt>
+                  <dd className="text-sm text-muted-foreground">{s.v}</dd>
+                </div>
+              ))}
+            </dl>
           </div>
 
-          <PreviewCard />
+          <div className="aurora">
+            <PreviewCard />
+          </div>
         </div>
       </section>
+
 
       <section className="mx-auto max-w-6xl px-4 py-16 sm:py-20">
         <h2 className="text-3xl font-bold sm:text-4xl">Having a Career Goal Isn't Enough.</h2>
