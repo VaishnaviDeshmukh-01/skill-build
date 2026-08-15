@@ -131,7 +131,7 @@ function Landing() {
         </p>
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {PROBLEMS.map(({ icon: Icon, title, body }) => (
-            <div key={title} className="surface p-6">
+            <div key={title} className="surface-interactive p-6">
               <Icon className="size-6 text-primary" aria-hidden />
               <h3 className="mt-4 text-lg font-semibold">{title}</h3>
               <p className="mt-2 text-sm text-muted-foreground">{body}</p>
@@ -147,7 +147,7 @@ function Landing() {
           </h2>
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {SOLUTIONS.map(({ icon: Icon, title, body }, i) => (
-              <div key={title} className="surface p-6">
+              <div key={title} className="surface-interactive p-6">
                 <span className="text-xs font-semibold text-muted-foreground">
                   Step {i + 1}
                 </span>
@@ -178,7 +178,7 @@ function Landing() {
               key={career.id}
               to="/careers/$careerId"
               params={{ careerId: career.id }}
-              className="surface group p-6 transition-shadow hover:shadow-[var(--shadow-lift)]"
+              className="surface-interactive group p-6"
             >
               <div className="flex items-center justify-between gap-2">
                 <Badge variant="secondary">{career.category}</Badge>
@@ -228,7 +228,7 @@ function PreviewCard() {
     { name: "Node.js", current: 10, required: 75 },
   ];
   return (
-    <div className="surface p-6 shadow-[var(--shadow-lift)]" aria-hidden>
+    <div className="surface ring-brand p-6" aria-hidden>
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
