@@ -56,22 +56,34 @@ export function EmptyState({
   );
 }
 
-export function UnauthorizedState() {
+export function UnauthorizedState({
+  title = "Please sign in",
+  description = "This page uses your assessment data, so you need an account to view it.",
+  showAuthActions = true,
+}: {
+  title?: string;
+  description?: string;
+  showAuthActions?: boolean;
+}) {
   return (
     <div className="surface mx-auto flex max-w-md flex-col items-center gap-3 p-10 text-center">
       <Lock className="size-8 text-muted-foreground" aria-hidden />
-      <h3 className="text-lg font-semibold">Please sign in</h3>
-      <p className="text-sm text-muted-foreground">
-        This page uses your assessment data, so you need an account to view it.
-      </p>
-      <div className="flex gap-2">
-        <Button asChild>
-          <Link to="/login">Sign in</Link>
-        </Button>
+      <h3 className="text-lg font-semibold">{title}</h3>
+      <p className="text-sm text-muted-foreground">{description}</p>
+      {showAuthActions ? (
+        <div className="flex gap-2">
+          <Button asChild>
+            <Link to="/login">Sign in</Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link to="/register">Create account</Link>
+          </Button>
+        </div>
+      ) : (
         <Button asChild variant="outline">
-          <Link to="/register">Create account</Link>
+          <Link to="/dashboard">Back to dashboard</Link>
         </Button>
-      </div>
+      )}
     </div>
   );
 }

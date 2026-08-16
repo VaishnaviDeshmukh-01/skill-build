@@ -7,7 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ErrorState } from "@/components/state-views";
 import { careersService } from "@/services/careers";
-import { getSkill } from "@/data/careers";
+import { CAREERS, getSkill } from "@/data/careers";
 
 export const Route = createFileRoute("/careers/$careerId")({
   head: () => ({
@@ -33,6 +33,7 @@ function CareerDetail() {
   const { data, isPending, isError, refetch } = useQuery({
     queryKey: ["career", careerId],
     queryFn: () => careersService.get(careerId),
+    initialData: () => CAREERS.find((c) => c.id === careerId),
   });
 
   return (

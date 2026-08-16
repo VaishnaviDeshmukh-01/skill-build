@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ErrorState, LoadingCards } from "@/components/state-views";
 import { careersService } from "@/services/careers";
+import { CAREERS } from "@/data/careers";
 
 export const Route = createFileRoute("/careers/")({
   head: () => ({
@@ -32,6 +33,7 @@ function CareersPage() {
   const { data, isPending, isError, refetch } = useQuery({
     queryKey: ["careers"],
     queryFn: careersService.list,
+    initialData: CAREERS,
   });
 
   const filtered = (data ?? []).filter((c) =>
