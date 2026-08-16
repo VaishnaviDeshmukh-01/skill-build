@@ -43,7 +43,18 @@ function AdminPage() {
   if (!loading && user?.role !== "admin") {
     return (
       <AppShell title="Admin" requireAuth={false}>
-        <UnauthorizedState />
+        {user ? (
+          <UnauthorizedState
+            title="Admins only"
+            description="Your account doesn't have admin access. Ask a platform administrator if you think this is a mistake."
+            showAuthActions={false}
+          />
+        ) : (
+          <UnauthorizedState
+            title="Sign in as an admin"
+            description="The admin dashboard is restricted. Sign in with an administrator account to continue."
+          />
+        )}
       </AppShell>
     );
   }
