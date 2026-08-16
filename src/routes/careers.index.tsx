@@ -32,6 +32,7 @@ function CareersPage() {
   const { data, isPending, isError, refetch } = useQuery({
     queryKey: ["careers"],
     queryFn: careersService.list,
+    initialData: CAREERS,
   });
 
   const filtered = (data ?? []).filter((c) =>
